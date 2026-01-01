@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snooker App - CM2030</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+  <script defer src="js/config.js"></script>
+  <script defer src="js/sounds.js"></script>
+  <script defer src="js/physics.js"></script>
+  <script defer src="js/ball.js"></script>
+  <script defer src="js/cue.js"></script>
+  <script defer src="js/spin-selector.js"></script>
+  <script defer src="js/modes.js"></script>
+  <script defer src="js/table.js"></script>
+  <script defer src="js/animations.js"></script>
+  <script defer src="js/game.js"></script>
+  <script defer src="js/sketch.js"></script>
+</head>
+<body>
+  <div class="main-layout">
+    <!-- STATUS PANEL (FULL WIDTH TOP) -->
+    <div class="status-panel">
+      <div class="status-title">GAME STATUS</div>
+      <div class="status-message" id="status-message">Initializing...</div>
+      <div class="status-phase" id="status-phase">Phase: reds</div>
+    </div>
+
+    <!-- CENTER ROW: P1 | TABLE | P2 -->
+    <div class="game-row">
+      <!-- LEFT PLAYER PANEL -->
+      <div class="player-panel player-panel-left">
+        <div class="player-badge player-1-badge">P1</div>
+        <div class="player-content">
+          <h2 class="player-name" id="player1-name">Player 1</h2>
+          
+          <div class="score-container">
+            <div class="score-label">SCORE</div>
+            <div class="score-display" id="player1-score">0</div>
+          </div>
+
+          <div class="info-box">
+            <div class="info-label">BALLS ON</div>
+            <div class="info-value" id="player1-balls-on">Red</div>
+          </div>
+
+          <div class="info-box">
+            <div class="info-label">TURN STATUS</div>
+            <div class="turn-indicator player-1-indicator" id="player1-turn">WAITING</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER CANVAS -->
+      <div id="p5-container" class="canvas-container"></div>
+
+      <!-- RIGHT PLAYER PANEL -->
+      <div class="player-panel player-panel-right">
+        <div class="player-badge player-2-badge">P2</div>
+        <div class="player-content">
+          <h2 class="player-name" id="player2-name">Player 2</h2>
+          
+          <div class="score-container">
+            <div class="score-label">SCORE</div>
+            <div class="score-display" id="player2-score">0</div>
+          </div>
+
+          <div class="info-box">
+            <div class="info-label">BALLS ON</div>
+            <div class="info-value" id="player2-balls-on">Red</div>
+          </div>
+
+          <div class="info-box">
+            <div class="info-label">TURN STATUS</div>
+            <div class="turn-indicator player-2-indicator" id="player2-turn">WAITING</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPIN SELECTOR (BOTTOM RIGHT OF SCREEN) -->
+    <div id="spin-selector-container" class="spin-selector-fixed">
+      <div class="spin-label">SPIN</div>
+      <svg id="spin-svg" width="120" height="120" viewBox="0 0 120 120" style="cursor: crosshair;">
+        <!-- Background circle -->
+        <circle cx="60" cy="60" r="55" fill="rgba(30,30,50,0.8)" stroke="rgba(100,100,150,0.8)" stroke-width="2"/>
+        
+        <!-- Center ball -->
+        <circle cx="60" cy="60" r="18" fill="white" stroke="none"/>
+        
+        <!-- Cross lines -->
+        <line x1="10" y1="60" x2="110" y2="60" stroke="rgba(100,100,150,0.5)" stroke-width="1"/>
+        <line x1="60" y1="10" x2="60" y2="110" stroke="rgba(100,100,150,0.5)" stroke-width="1"/>
+        
+        <!-- Spin indicator dot -->
+        <circle id="spin-dot" cx="60" cy="60" r="6" fill="#ff4444" stroke="none"/>
+      </svg>
+      <div class="spin-value" id="spin-display">Center</div>
+    </div>
+  </div>
+</body>
+</html>

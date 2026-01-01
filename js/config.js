@@ -1,0 +1,117 @@
+const CANVAS_WIDTH = 1500;
+const CANVAS_HEIGHT = 820;
+
+const TABLE_LENGTH = Math.min(CANVAS_WIDTH * 0.95, CANVAS_HEIGHT * 0.95 * 2);
+const TABLE_WIDTH = TABLE_LENGTH / 2;
+
+const TABLE_BORDER = Math.max(28, TABLE_WIDTH * 0.08);
+const TABLE_CORNER_RADIUS = Math.max(12, TABLE_WIDTH * 0.035);
+
+const TABLE_X = (CANVAS_WIDTH - TABLE_LENGTH) / 2;
+const TABLE_Y = (CANVAS_HEIGHT - TABLE_WIDTH) / 2;
+
+const TABLE_CENTER_X = TABLE_X + TABLE_LENGTH / 2;
+const TABLE_CENTER_Y = TABLE_Y + TABLE_WIDTH / 2;
+
+const BALL_DIAMETER = (TABLE_WIDTH / 32) * 1.1 * 1.1;
+const BALL_RADIUS = BALL_DIAMETER / 2;
+
+const POCKET_DIAMETER = BALL_DIAMETER * 2.0;
+const POCKET_RADIUS = POCKET_DIAMETER / 2;
+const POCKET_INSET = POCKET_RADIUS * 0.4;
+
+const POCKETS = [
+  { x: TABLE_X + POCKET_INSET, y: TABLE_Y + POCKET_INSET },
+  { x: TABLE_X + TABLE_LENGTH / 2, y: TABLE_Y + POCKET_INSET },
+  { x: TABLE_X + TABLE_LENGTH - POCKET_INSET, y: TABLE_Y + POCKET_INSET },
+  { x: TABLE_X + POCKET_INSET, y: TABLE_Y + TABLE_WIDTH - POCKET_INSET },
+  { x: TABLE_X + TABLE_LENGTH / 2, y: TABLE_Y + TABLE_WIDTH - POCKET_INSET },
+  { x: TABLE_X + TABLE_LENGTH - POCKET_INSET, y: TABLE_Y + TABLE_WIDTH - POCKET_INSET }
+];
+
+const POCKET_CAPTURE_RADIUS = POCKET_RADIUS * 1.15;
+
+const MARK_LINE_WIDTH = Math.max(1, BALL_DIAMETER * 0.09);
+
+const BAULK_LINE_X = TABLE_X + TABLE_LENGTH * 0.2;
+const D_RADIUS = TABLE_WIDTH * 0.17;
+
+const SPOT_RADIUS = Math.max(2, BALL_DIAMETER * 0.18);
+
+const BALL_RESTITUTION = 0.92;
+const BALL_FRICTION = 0.02;
+const BALL_FRICTION_STATIC = 0.02;
+const BALL_FRICTION_AIR = 0.02;
+
+const CUSHION_RESTITUTION = 0.92;
+const CUSHION_FRICTION = 0.02;
+const CUSHION_FRICTION_STATIC = 0.02;
+
+const CUE_LENGTH = BALL_DIAMETER * 14;
+const CUE_THICKNESS = Math.max(3, BALL_DIAMETER * 0.18);
+const CUE_GAP = BALL_RADIUS * 0.35;
+const CUE_AIM_LINE_LENGTH = BALL_DIAMETER * 10;
+
+const CUE_POWER_MAX_DIST = BALL_DIAMETER * 10;
+const CUE_MIN_PULL = BALL_DIAMETER * 0.6;
+const CUE_MAX_PULL = BALL_DIAMETER * 3.0;
+
+const CUE_MIN_SHOT_DIST = BALL_DIAMETER * 0.8;
+const CUE_FORCE_MIN = 0.0081;
+const CUE_FORCE_MAX = 0.054;
+
+const TRAIL_MAX_POINTS = 18;
+const TRAIL_FADE_PER_FRAME = 22;
+const TRAIL_MIN_SPEED = 0.6;
+const TRAIL_COLOR = [245, 245, 245];
+
+const IMPACT_TTL = 16;
+const IMPACT_MIN_R = BALL_RADIUS * 0.6;
+const IMPACT_MAX_R = BALL_DIAMETER * 2.6;
+const IMPACT_COLOR = [255, 250, 200];
+
+const POT_TTL = 22;
+
+const GUIDE_COLOR = [120, 200, 255];
+
+const DIVERGENCE_LINE_LEN = BALL_DIAMETER * 14;
+const DIVERGENCE_GHOST_ALPHA = 90;
+const DIVERGENCE_TARGET_COLOR = [255, 210, 70];
+const DIVERGENCE_CUE_COLOR = [140, 255, 170];
+
+const SPOTS = {
+  brown: { x: BAULK_LINE_X, y: TABLE_CENTER_Y },
+  yellow: { x: BAULK_LINE_X, y: TABLE_CENTER_Y + D_RADIUS },
+  green: { x: BAULK_LINE_X, y: TABLE_CENTER_Y - D_RADIUS },
+  blue: { x: TABLE_CENTER_X, y: TABLE_CENTER_Y },
+  pink: { x: TABLE_X + TABLE_LENGTH * 0.75, y: TABLE_CENTER_Y },
+  black: { x: TABLE_X + TABLE_LENGTH * 0.92, y: TABLE_CENTER_Y }
+};
+
+const COLORS = {
+  background: [44, 44, 44],
+  border: [97, 55, 30],
+  borderInner: [75, 42, 23],
+  cloth: [23, 102, 52],
+  line: [240, 240, 240],
+  pocket: [10, 10, 10],
+  cue: [210, 170, 110],
+  balls: {
+    red: [180, 35, 35],
+    white: [240, 240, 240],
+    yellow: [245, 203, 66],
+    green: [42, 150, 72],
+    brown: [150, 95, 55],
+    blue: [46, 115, 215],
+    pink: [235, 132, 168],
+    black: [20, 20, 20]
+  },
+  spots: {
+    yellow: [245, 203, 66],
+    green: [42, 150, 72],
+    brown: [150, 95, 55],
+    blue: [46, 115, 215],
+    pink: [235, 132, 168],
+    black: [20, 20, 20]
+  }
+};
