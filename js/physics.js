@@ -9,7 +9,31 @@ function initPhysics() {
 
   Matter.Events.on(engine, 'collisionStart', (event) => {
     try {
-      // Only handle collision sound - remove complex spin logic
+      // Apply pending spin on first cue ball contact with another ball
+      if (typeof pendingSpinData !== 'undefined' && pendingSpinData && !cueBallHasHitBall && cueBall && cueBall.body) {
+        if (event && event.pairs) {
+          for (const pair of event.pairs) {
+            if (!pair || !pair.bodyA || !pair.bodyB) continue;
+            
+            const bodyA = pair.bodyA;
+            const bodyB = pair.bodyB;
+            
+            // Check if cue ball is involved
+            if ((bodyA && bodyA === cueBall.body) || (bodyB && bodyB === cueBall.body)) {
+              const otherBody = (bodyA && bodyA === cueBall.body) ? bodyB : bodyA;
+              // Check if hitting another ball (has ballRef property)
+              if (otherBody && otherBody.ballRef) {
+                console.log('Cue ball hit another ball! Applying pending spin:', pendingSpinData);
+                cueBall.setSpin(pendingSpinData.x, pendingSpinData.y, pendingSpinData.magnitude);
+                cueBallHasHitBall = true;
+                pendingSpinData = null;
+              }
+            }
+          }
+        }
+      }
+      
+      // Only handle collision sound
       if (event && event.pairs) {
         handleCollisionSound(event);
       }

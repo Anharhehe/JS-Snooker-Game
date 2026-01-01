@@ -57,6 +57,11 @@ function gameStartShot() {
   if (!game) gameInit();
   if (game.shotActive) return;
 
+  // Reset cue ball first contact flag for spin application
+  if (typeof cueBallHasHitBall !== 'undefined') {
+    cueBallHasHitBall = false;
+  }
+
   game.shotActive = true;
   game.firstContact = null;
   game.pottedThisShot = [];

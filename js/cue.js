@@ -1,5 +1,7 @@
 let isPlacingCueBall = true;
 let isDraggingCueBall = false;
+let pendingSpinData = null; // Store spin to apply on first contact
+let cueBallHasHitBall = false; // Track if cue ball hit another ball this shot
 
 function resetCueBallState() {
   isPlacingCueBall = true;
@@ -348,16 +350,19 @@ function cueShoot() {
     y: dirY * forceMag
   });
 
-  // Apply spin from spin selector immediately
-  if (typeof spinSelector !== 'undefined' && cueBall) {
+  // STORE spin data to apply on first ball contact (not immediately)
+  if (typeof spinSelector !== 'undefined') {
     const spin = spinSelector.getSpin();
-    // 20x sensitivity
-    const spinMagnitude = Math.max(spin.magnitude * 20, 0.1);
-    cueBall.setSpin(spin.x, spin.y, spinMagnitude);
-    console.log('Spin applied:', { x: spin.x, y: spin.y, magnitude: spinMagnitude });
+    pendingSpinData = {
+      x: spin.x,
+      y: spin.y,
+      magnitude: Math.max(spin.magnitude * 20, 0.1)
+    };
+    cueBallHasHitBall = false; // Reset flag for this shot
+    console.log('Spin stored, will apply on first contact:', pendingSpinData);
   }
 
-  // Reset spin selector
+  // Reset spin selector visually
   if (typeof spinSelector !== 'undefined' && spinSelector.reset) {
     spinSelector.reset();
   }
